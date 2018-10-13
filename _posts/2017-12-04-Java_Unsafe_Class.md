@@ -9,7 +9,8 @@ mathjax: true
 * content
 {:toc}
 
-# 1.Unsafe类介绍
+# 1. Unsafe类介绍
+
 Unsafe类是在sun.misc包下，不属于Java标准。但是很多Java的基础类库，包括一些被广泛使用的高性能开发库都是基于Unsafe类开发的，比如Netty、Hadoop、Kafka等。
 
 使用Unsafe可用来直接访问系统内存资源并进行自主管理，Unsafe类在提升Java运行效率，增强Java语言底层操作能力方面起了很大的作用。
@@ -20,7 +21,7 @@ Unsafe可认为是Java中留下的后门，提供了一些低层次操作，如�
 
 下面是使用Unsafe的一些例子。
 
-## 1.1实例化私有类
+## 1.1 实例化私有类
 ``` java
 import java.lang.reflect.Field;  
   
@@ -57,7 +58,7 @@ class Player{
 }
 ```
 
-## 1.2CAS操作，通过内存偏移地址修改变量值
+## 1.2 CAS操作，通过内存偏移地址修改变量值
 java并发包中的SynchronousQueue中的TransferStack中使用CAS更新栈顶。
 
 ``` java
@@ -83,12 +84,10 @@ boolean casHead(SNode h, SNode nh) {
 }
 ```
 
-## 1.3直接内存访问
+## 1.3 直接内存访问
 Unsafe的直接内存访问：用Unsafe开辟的内存空间不占用Heap空间，当然也不具有自动内存回收功能。做到像C一样自由利用系统内存资源。
 
- 
-
-# 2.Unsafe类源码分析
+# 2. Unsafe类源码分析
 Unsafe的大部分API都是native的方法，主要包括以下几类：
 
 1）Class相关。主要提供Class和它的静态字段的操作方法。
@@ -103,7 +102,7 @@ Unsafe的大部分API都是native的方法，主要包括以下几类：
 
 6）系统相关。主要返回某些低级别的内存信息，如地址大小、内存页大小。
 
-## 2.1Class相关
+## 2.1 Class相关
 ``` java
   //静态属性的偏移量，用于在对应的Class对象中读写静态属性
     public native long staticFieldOffset(Field f);
@@ -121,7 +120,7 @@ Unsafe的大部分API都是native的方法，主要包括以下几类：
     public native Class<?> defineAnonymousClass(Class<?> hostClass, byte[] data, Object[] cpPatches);
 ```
 
-## 2.2Object相关
+## 2.2 Object相关
 Java中的基本类型（boolean、byte、char、short、int、long、float、double）及对象引用类型都有以下方法。
 
 ``` java
@@ -139,7 +138,7 @@ Java中的基本类型（boolean、byte、char、short、int、long、float、do
         throws InstantiationException;
 ```
 
-## 2.3数组相关
+## 2.3 数组相关
 ``` java
     /**
      * Report the offset of the first element in the storage allocation of a
@@ -179,8 +178,9 @@ Java中的基本类型（boolean、byte、char、short、int、long、float、do
 ```
 通过arrayBaseOffset和arrayIndexScale可定位数组中每个元素在内存中的位置。
 
-## 2.4并发相关
-### 2.4.1CAS相关
+## 2.4 并发相关
+
+### 2.4.1 CAS相关
 CAS：CompareAndSwap，内存偏移地址offset，预期值expected，新值x。如果变量在当前时刻的值和预期值expected相等，尝试将变量的值更新为x。如果更新成功，返回true；否则，返回false。
 
 ``` java
@@ -243,7 +243,7 @@ CAS：CompareAndSwap，内存偏移地址offset，预期值expected，新值x。
     }
 ```
 
-### 2.4.2线程调度相关
+### 2.4.2 线程调度相关
 ``` java
     //取消阻塞线程
   public native void unpark(Object thread);
@@ -257,7 +257,7 @@ CAS：CompareAndSwap，内存偏移地址offset，预期值expected，新值x。
     public native boolean tryMonitorEnter(Object o);
 ```
 
-### 2.4.3volatile相关读写
+### 2.4.3 volatile相关读写
 Java中的基本类型（boolean、byte、char、short、int、long、float、double）及对象引用类型都有以下方法。
 
 ``` java
@@ -286,7 +286,8 @@ Java中的基本类型（boolean、byte、char、short、int、long、float、do
     /** Ordered/Lazy version of {@link #putLongVolatile(Object, long, long)} */
     public native void    putOrderedLong(Object o, long offset, long x);
 ``` 
-### 2.4.4内存屏障相关
+
+### 2.4.4 内存屏障相关
 Java 8引入 ，用于定义内存屏障，避免代码重排序。
 
 ``` java
@@ -298,7 +299,7 @@ Java 8引入 ，用于定义内存屏障，避免代码重排序。
     public native void fullFence();
 ```
 
-## 2.5直接内存访问（非堆内存）
+## 2.5 直接内存访问（非堆内存）
 allocateMemory所分配的内存需要手动free（不被GC回收）
 
 ``` java
@@ -332,8 +333,9 @@ allocateMemory所分配的内存需要手动free（不被GC回收）
     }
   //释放内存
     public native void freeMemory(long address);
+```
 
-## 2.6系统相关。
+## 2.6 系统相关。
 
 ``` java
   //返回指针的大小。返回值为4或8。
@@ -348,7 +350,7 @@ allocateMemory所分配的内存需要手动free（不被GC回收）
 
  
 
-# 3.参考资料
+# 3. 参考资料
 https://www.cnblogs.com/pkufork/p/java_unsafe.html 说一说Java中的Unsafe类
 
 https://www.cnblogs.com/suxuan/p/4948608.html java魔法类：sun.misc.Unsafe
