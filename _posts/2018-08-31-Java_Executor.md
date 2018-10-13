@@ -144,18 +144,19 @@ Other less important but longtime things.
 ``` 
 
 # 任务的执行机制
+
 ## ThreadPoolExecutor
 ThreadPoolExecutor是Executor框架最核心的类，是线程池的实现类。
 
 核心配置参数包括
 
-corePoolSize：核心线程池的大小
+* corePoolSize：核心线程池的大小
 
-maximumPoolSize：最大线程池的大小
+* maximumPoolSize：最大线程池的大小
 
-BlockingQueue：暂时保存任务的工作队列
+* BlockingQueue：暂时保存任务的工作队列
 
-RejectedExecutionHandler：当ThreadPoolExecutor已经饱和时（达到了最大线程池大小且工作队列已满）将执行的Handler。
+* RejectedExecutionHandler：当ThreadPoolExecutor已经饱和时（达到了最大线程池大小且工作队列已满）将执行的Handler。
 
 ``` java
     public ThreadPoolExecutor(int corePoolSize, 
@@ -188,13 +189,13 @@ FixedThreadPool是固定线程数的线程池，最多线程池中有nThreads个
 
 FixedThreadPool的execute()方法内部执行过程
 
-当新任务被提交时，如果当前运行线程数小于nTheads，创建新线程执行任务
+1. 当新任务被提交时，如果当前运行线程数小于nTheads，创建新线程执行任务
 
-如果当前运行线程数等于设置的最大线程数nThreads，将新任务加入到工作队列LinkedBlockingQueue中
+2. 如果当前运行线程数等于设置的最大线程数nThreads，将新任务加入到工作队列LinkedBlockingQueue中
 
-线程执行完任务后会反复从LinkedBlockingQueue中获取新任务执行
+3. 线程执行完任务后会反复从LinkedBlockingQueue中获取新任务执行
 
-LinkedBlockingQueue中没有新任务，线程空闲，线程将被终止。
+4. LinkedBlockingQueue中没有新任务，线程空闲，线程将被终止。
 
 注意点：
 
@@ -227,11 +228,11 @@ CachedThreadPool是根据需要创建新线程的线程池。
 
 CachedThreadPool的execute()方法的内部运行过程
 
-当新任务被提交时，主线程将任务插入到工作队列中（SynchronousQueue的offer()方法），如果线程池有空闲线程在等待任务，新任务交给空闲线程处理。
+1. 当新任务被提交时，主线程将任务插入到工作队列中（SynchronousQueue的offer()方法），如果线程池有空闲线程在等待任务，新任务交给空闲线程处理。
 
-如果线程池中没有在等待任务的空闲线程，创建新线程执行任务
+2. 如果线程池中没有在等待任务的空闲线程，创建新线程执行任务
 
-线程执行完任务后，等待60s（SynchronousQueue.poll(60, TimeUnit.SECONDS)方法），如果没有等待新任务，线程终止
+3. 线程执行完任务后，等待60s（SynchronousQueue.poll(60, TimeUnit.SECONDS)方法），如果没有等待新任务，线程终止
 
 SynchronousQueue是一个没有容量的BlockingQueue。每一个插入操作必须等待另一个线程的移除操作。
 
@@ -269,9 +270,9 @@ public ScheduledFuture<?> scheduleWithFixedDelay(Runnable command,//任务
                                                      TimeUnit unit)
 ```
 
-###实现原理
+### 实现原理
 
-数据结构
+#### 数据结构
 ScheduledThreadPoolExecutor：定时任务执行器
 
 DelayQueue：使用DelayQueue作为任务队列，保存待调度的任务，任务按照执行的时间点排序。DelayQueue内部是用PriorityQueue实现。
@@ -280,17 +281,17 @@ ScheduledFutureTask：待调度任务。
 
 ScheduledFutureTask的成员变量：
 
-time：任务将被执行的具体时间
+* time：任务将被执行的具体时间
 
-sequenceNumber：任务序号，time相同时，序号小的先执行
+* sequenceNumber：任务序号，time相同时，序号小的先执行
 
-period：任务执行的间隔周期
+* period：任务执行的间隔周期
 
-运行机制
+#### 运行机制
 ScheduledThreadPoolExecutor内部运行过程
 
-线程从DelayQueue中获取到到期的ScheduledFutureTask，到期是指time大于等于当前时间。
+1. 线程从DelayQueue中获取到到期的ScheduledFutureTask，到期是指time大于等于当前时间。
 
-执行任务ScheduledFutureTask
+2. 执行任务ScheduledFutureTask
 
-修改ScheduledFutureTask的time为下次要执行的时间，放回到DelayQueue中
+3. 修改ScheduledFutureTask的time为下次要执行的时间，放回到DelayQueue中
