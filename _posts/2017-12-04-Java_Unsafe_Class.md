@@ -1,12 +1,14 @@
 ---
 layout: post
 title:  "Java中的Unsafe类"
-date:   2018-09-09 11:40:18 +0800
-categories: jekyll
+categories: Java并发 
 tags: JUC Unsafe 
 author: thelight1
 mathjax: true
 ---
+* content
+{:toc}
+
 # 1.Unsafe类介绍
 Unsafe类是在sun.misc包下，不属于Java标准。但是很多Java的基础类库，包括一些被广泛使用的高性能开发库都是基于Unsafe类开发的，比如Netty、Hadoop、Kafka等。
 
