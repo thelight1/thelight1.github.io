@@ -18,7 +18,7 @@ mathjax: true
 
 首先是Subject接口类。
 
-``` Java
+``` java
 package proxy.pattern;
 ​
 public interface Subject {
@@ -27,7 +27,7 @@ public interface Subject {
 ```
 接着是RealSubject类。
 
-``` Java
+``` java
 package proxy.pattern;
 ​
 public class RealSubject implements Subject {
@@ -38,7 +38,7 @@ public class RealSubject implements Subject {
 }
 ```
 下面是代理对象的InvocationHandler接口实现类。
-``` Java
+``` java
 package proxy.dynamic;
 ​
 import proxy.pattern.RealSubject;
@@ -69,7 +69,7 @@ public class JdkProxySubject implements InvocationHandler {
 }
 ```
 InvocationHandler接口的定义如下。
-``` Java
+``` java
 /**
  * {@code InvocationHandler} is the interface implemented by
  * the <i>invocation handler</i> of a proxy instance.
@@ -93,7 +93,7 @@ public interface InvocationHandler {
 }
 ```
 
-``` Java
+``` java
 package proxy.dynamic;
 ​
 import proxy.pattern.RealSubject;
@@ -129,7 +129,7 @@ after
 ## Proxy.newProxyInstance()
 newProxyInstance方法的完整代码如下。
 
-``` Java
+``` java
     @CallerSensitive
     public static Object newProxyInstance(ClassLoader loader,
                                           Class<?>[] interfaces,
@@ -184,7 +184,7 @@ newProxyInstance方法的完整代码如下。
     }
 ```
 我们将错误判断等无用代码去掉后，代码如下。
-``` Java
+``` java
 @CallerSensitive
 public static Object newProxyInstance(ClassLoader loader,
                                       Class<?>[] interfaces,
@@ -208,7 +208,7 @@ public static Object newProxyInstance(ClassLoader loader,
 下面，我们看看getProxyClass0方法，看看代理类是如何生成的。
 
 ## getProxyClass0()
-``` Java
+``` java
 private static Class<?> getProxyClass0(ClassLoader loader,
                                        Class<?>... interfaces) {
   if (interfaces.length > 65535) {
@@ -228,7 +228,7 @@ private static Class<?> getProxyClass0(ClassLoader loader,
 ## ProxyClassFactory.apply()
 ProxyClassFactory类完整的代码如下。
 
-``` Java
+``` java
 private static final class ProxyClassFactory
   implements BiFunction<ClassLoader, Class<?>[], Class<?>>
     {
@@ -331,7 +331,7 @@ private static final class ProxyClassFactory
 ``` 
 我们将无用的代码去掉后，代码如下。
 
-``` Java
+``` java
     private static final class ProxyClassFactory
         implements BiFunction<ClassLoader, Class<?>[], Class<?>>
     {
@@ -376,11 +376,11 @@ ProxyGenerator.generateProxyClass生成.class文件的过程其实就是根据.c
 ## 生成的代理对象的.class文件
 在创建代理对象前，可以通过下面语句，可以将生成的代理类的.class保存在本地。
 
-``` Java
+``` java
 System.getProperties().put("sun.misc.ProxyGenerator.saveGeneratedFiles", "true");
 ``` 
 生成的代理类的.class文件发编译后，是下面这个样子的。
-``` Java
+``` java
 //
 // Source code recreated from a .class file by IntelliJ IDEA
 // (powered by Fernflower decompiler)
@@ -461,7 +461,7 @@ public final class $Proxy0 extends Proxy implements Subject {
     }
 }
 ```​
-``` Java
+``` java
 public class Proxy implements java.io.Serializable {
 ​
     /**
