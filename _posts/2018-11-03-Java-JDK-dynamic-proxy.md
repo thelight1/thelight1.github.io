@@ -92,7 +92,7 @@ public interface InvocationHandler {
         throws Throwable;
 }
 ```
-
+客户端代码如下。
 ``` java
 package proxy.dynamic;
 ​
@@ -124,7 +124,7 @@ RealSubject execute request()
 after
 ```
 # JDK动态代理实现原理分析
-生成代理对象的关键调用链为Proxy.newProxyInstance()-------->getProxyClass0()------->ProxyClassFactory.apply()-------->ProxyGenerator.generateProxyClass()
+生成代理对象的方法调用链为Proxy.newProxyInstance()-------->getProxyClass0()------->ProxyClassFactory.apply()-------->ProxyGenerator.generateProxyClass()。我们下面依次对各个阶段进行分析。
 
 ## Proxy.newProxyInstance()
 newProxyInstance方法的完整代码如下。
@@ -350,13 +350,13 @@ private static final class ProxyClassFactory
                 // if no non-public proxy interfaces, use com.sun.proxy package
                 proxyPkg = ReflectUtil.PROXY_PACKAGE + ".";
             }
-            //第二步：确定类名。（在我们上述例子中，生成的代理类名为com.sun.proxy.$Proxy0）
+            //第二步：确定类名。（在我们例子中，生成的代理类名为com.sun.proxy.$Proxy0）
             /*
              * Choose a name for the proxy class to generate.
              */
             long num = nextUniqueNumber.getAndIncrement();
             String proxyName = proxyPkg + proxyClassNamePrefix + num;
-            //第三步：根据类名、代理接口等信息，生成.class文件，就是javac编译后的.class文件。
+            //第三步：根据类名、代理接口等信息，生成代理类。实际上可以理解为生成.class文件。
             /*
              * Generate the specified proxy class.
              */
@@ -370,16 +370,18 @@ private static final class ProxyClassFactory
     }
 ```
 ## ProxyGenerator.generateProxyClass()
-ProxyGenerator.generateProxyClass生成.class文件的过程其实就是根据.class文件格式来生成对应字节数组
-由于代码太长了，不贴了，可以看这个http://hg.openjdk.java.net/jdk7/jdk7/jdk/file/f097ca2434b1/src/share/classes/sun/misc/ProxyGenerator.java
+ProxyGenerator.generateProxyClass生成.class文件的过程其实就是根据.class文件格式来一步步拼接处对应字节数组。
+由于代码太长了，不贴了，可以看这个。
+[ProxyGenerator.java](http://hg.openjdk.java.net/jdk7/jdk7/jdk/file/f097ca2434b1/src/share/classes/sun/misc/ProxyGenerator.java)
+
 
 ## 生成的代理对象的.class文件
-在创建代理对象前，可以通过下面语句，可以将生成的代理类的.class保存在本地。
+在创建代理对象前，可以通过下面语句，将生成的代理类的.class保存在本地。
 
 ``` java
 System.getProperties().put("sun.misc.ProxyGenerator.saveGeneratedFiles", "true");
 ``` 
-生成的代理类的.class文件发编译后，是下面这个样子的。
+生成的代理类的.class文件反编译后，是下面这个样子的。
 ``` java
 //
 // Source code recreated from a .class file by IntelliJ IDEA
