@@ -371,9 +371,8 @@ private static final class ProxyClassFactory
 ```
 ## ProxyGenerator.generateProxyClass()
 ProxyGenerator.generateProxyClass生成.class文件的过程其实就是根据.class文件格式来一步步拼接处对应字节数组。
-由于代码太长了，不贴了，可以看这个。
-[ProxyGenerator.java](http://hg.openjdk.java.net/jdk7/jdk7/jdk/file/f097ca2434b1/src/share/classes/sun/misc/ProxyGenerator.java)
-
+由于代码太长了，不贴了，可以看这个
+[ProxyGenerator.java](http://hg.openjdk.java.net/jdk7/jdk7/jdk/file/f097ca2434b1/src/share/classes/sun/misc/ProxyGenerator.java)。
 
 ## 生成的代理对象的.class文件
 在创建代理对象前，可以通过下面语句，将生成的代理类的.class保存在本地。
@@ -463,6 +462,7 @@ public final class $Proxy0 extends Proxy implements Subject {
     }
 }
 ```​
+
 ``` java
 public class Proxy implements java.io.Serializable {
 ​
