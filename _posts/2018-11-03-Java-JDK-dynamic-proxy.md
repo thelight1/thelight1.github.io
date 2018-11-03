@@ -461,7 +461,8 @@ public final class $Proxy0 extends Proxy implements Subject {
         }
     }
 }
-```​
+```
+Proxy中InvocationHandler的定义如下。
 
 ``` java
 public class Proxy implements java.io.Serializable {
@@ -485,4 +486,5 @@ public class Proxy implements java.io.Serializable {
         Objects.requireNonNull(h);
         this.h = h;
     }
+}
 ```
