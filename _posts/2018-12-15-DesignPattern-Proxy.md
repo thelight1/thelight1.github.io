@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "解析JDK动态代理实现原理"
-categories: Java 
-tags: Java 
+title:  "【设计模式】之代理模式"
+categories: DesignPattern 
+tags: DesignPattern 
 author: thelight1
 mathjax: true
 ---
